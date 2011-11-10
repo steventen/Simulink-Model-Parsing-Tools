@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from pyparsing import *
 import re
 import string
