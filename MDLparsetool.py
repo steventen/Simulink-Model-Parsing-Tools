@@ -61,7 +61,7 @@ def convertNumbers(s,l,toks):
     n = toks[0]
     try:
         return int(n)
-    except ValueError, ve:
+    except ValueError as ve:
         return float(n)
 
 def joinStrings(s,l,toks):
@@ -87,8 +87,8 @@ def mdlParser(mdlFilePath):
 	mdlName = Word('$'+'.'+'_'+alphas+nums)
 	mdlValue = Forward()
 	# Strings can be split over multiple lines
-	mdlString = (dblString + Optional(OneOrMore(Suppress(LineEnd()) + LineStart()
-				 + dblString)))
+	mdlString = dblString + ZeroOrMore(Suppress(LineEnd()) + dblString)
+	mdlString.set_parse_action(lambda lst: "".join(lst))
 	mdlElements = delimitedList( mdlValue )
 	mdlArray = Group(Suppress('[') + Optional(mdlElements) + Suppress(']') )
 	mdlMatrix =Group(Suppress('[') + (delimitedList(Group(mdlElements),';')) \
@@ -279,11 +279,11 @@ def main():
 	JointList = find_block(mdldata,'Block','DialogClass','JointBlock')
 	JointNameList = get_param(JointList,'Name',0)
 	ConnList = get_connection(mdldata, JointNameList)
-	print 'ConnList'
+	print('ConnList')
 	pprint(ConnList)
-	print 'ConnList[1]'
+	print('ConnList[1]')
 	pprint(ConnList[1])
-	print 'ConnList[1][1]'
+	print('ConnList[1][1]')
 	pprint(ConnList[1][1])
 	fListT = open('fourBarTemplete.txt','wb')
 
